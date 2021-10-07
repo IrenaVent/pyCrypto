@@ -1,0 +1,59 @@
+/* @import url('https://fonts.googleapis.com/css?family=Montserrat:100,300,400'); */
+
+@import url('https://fonts.googleapis.com/css?family=Cutive Mono');
+
+
+:root{
+    --color-p: #E6E6E6;
+    --color-s: #5C7AEA;
+    --color-a: #3D56B2;
+    --separación-defecto: 8px;
+}
+
+.api-name {
+    color: var(--color-s);
+    font-family: "Cutive Mono";
+}
+
+.transactions-table { 
+/* box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12); */
+border: solid 1px var(--color-s);
+border-radius: 4px;
+font-size: 14px;
+font-family: "Cutive Mono";
+line-height: 2em;
+line-height: 2em;
+padding: 10px 10px;
+}
+
+.table-title {
+    color: var(--color-s);
+    background-color: var(--color-p);
+    padding: 0.4rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    font-family: "Cutive Mono";
+}
+
+.table-head {
+    color: var(--color-s);
+}
+
+td,th {
+    padding: 0 20px;
+}
+
+#transaction-form.disable {
+    display: none;
+}
+
+.note-footer {
+    color: var(--color-s);
+    padding: 0.4rem;
+    font-size: 0.6rem;
+    border-radius: 4px;
+    font-family: "Cutive Mono";
+}
+
+
+

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pyCrypto</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="/static/js/spa.js"> </script>
+</head>
+<body>
+    <header>
+        <h1 class="api-name">.pyCrypto</h1>
+    </header>
+    <section>
+    <div class="transactions-container">
+        <h1 class="table-title">Transactions</h1>
+        <table class="transactions-table">
+            <thead class="table-head">
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>From</th>
+                    <th>Amount</th>
+                    <th>To</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody id="investments-table">
+
+            </tbody>
+        </table>
+    </div>
+    <div class="status-container">
+        <table class="status-table">
+            <tr>
+                <th>Invested</th>
+                <td>7.625,15 €</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>9.000,34 €</td>
+            </tr>
+            <tr>
+                <th>Outcome</th>
+                <td>1.875,20 €</td>
+            </tr>
+        </table>
+    </div>
+    </section>
+    <button id="add-button">add</button>
+    <div class="transaction-register-container">
+        <form id="transaction-form" class="disable">
+            <div>
+                <label for="From">From:</label>
+                    <select id="currency_from">
+                        
+                    </select>
+            </div>
+            <div>
+                <label for="To">To:</label>
+                    <select id="currency_to">
+                        
+                    </select>
+            </div>
+        </form>
+        <div class="transaction-to"></div>
+        <div class="transaction-buttons"></div>
+    </div>
+    <!-- <article>
+        <form id="formulario-movimiento" class="inactivo">
+            <div class="campo-formulario">
+                <label for="fecha">Fecha:</label>
+                <input type="date" name="fecha" id="fecha">   
+            </div>
+            <div class="campo-formulario">
+                <label for="concepto">Concepto:</label>
+                <input type="text" name="concepto" id="concepto">
+            </div>
+            <div class="campo-formulario">
+                <input type="radio" name="ingreso_gasto" id="ingreso" value="I"><span class="label">Ingreso</span>  
+                <input type="radio" name="ingreso_gasto" id="gasto" value="G"><span class="label">Gasto</span>
+            </div>
+            <div class="campo-formulario">
+                <label for="cantidad">Cantidad:</label>
+                <input type="text" name="cantidad" id="cantidad">
+            </div>
+
+            <input id ="btn-enviar" name="submit" class="blue-button" type="submit" value="Enviar">
+        </form>
+    </article> -->
+
+    <footer class="note-footer">
+        © 2021 pyCrypt by irena.vent 
+    </footer>
+</body>
+</html>
