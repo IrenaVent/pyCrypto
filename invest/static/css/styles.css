@@ -47,6 +47,10 @@ td,th {
     display: none;
 }
 
+#error-message {
+    color: red;
+}
+
 .note-footer {
     color: var(--color-s);
     padding: 0.4rem;

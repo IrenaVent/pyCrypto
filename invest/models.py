@@ -1,9 +1,5 @@
 import sqlite3
 
-class APIError (Exception):  
-    pass
-
-
 class DBManager():
     def __init__(self, database_path):
         self.database_path = database_path
@@ -30,3 +26,8 @@ class DBManager():
  
         conexion.close()
         return registros
+
+
+
+
+        
