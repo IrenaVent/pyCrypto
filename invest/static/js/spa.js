@@ -1,6 +1,22 @@
 const investmentsListRequest = new XMLHttpRequest();
 const root_host = "http://127.0.0.1:5000/api/v1/";
 
+const currencyList = [
+    "EUR",
+    "ETH",
+    "LTC",
+    "BNB",
+    "EOS",
+    "XLM",
+    "TRX",
+    "BTC",
+    "XRP",
+    "BCH",
+    "USDT",
+    "BSV",
+    "ADA",
+];
+
 function showInvesments() {
     // console.log(this.readyState)
     // console.log(this.status)
@@ -39,6 +55,16 @@ function showFormNewTrasnaction(ev) {
     form.classList.remove("disable");
 }
 
+function loadCurrencyList(selector) {
+    const currencyListSelect = document.getElementById(selector);
+    let currencyListHTML;
+    for (let i = 0; i < currencyList.length; i++) {
+        currencyListHTML += `
+        <option value="${currencyList[i]}">${currencyList[i]}</option>`;
+    }
+    currencyListSelect.innerHTML += currencyListHTML;
+}
+
 window.onload = function () {
     const url = `${root_host}investments`;
     investmentsListRequest.open("GET", url, true);
@@ -47,4 +73,13 @@ window.onload = function () {
 
     const addBTN = document.querySelector("#add-button");
     addBTN.addEventListener("click", showFormNewTrasnaction);
+
+    const currencyListFrom = document.getElementById("currency-from");
+    currencyListFrom.addEventListener(
+        "click",
+        loadCurrencyList("currency-from")
+    );
+
+    const currencyListTo = document.getElementById("currency-to");
+    currencyListTo.addEventListener("click", loadCurrencyList("currency-to"));
 };
