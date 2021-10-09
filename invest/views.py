@@ -56,6 +56,14 @@ def transaction(id):
             "message": str(error)
             }
         return jsonify(error), 400
-        
+
+@app.route("/api/v1/investments", methods=["POST"])
+def add_transaction():
+    add = """INSERT INTO investments (date, time, currency_from, amount_from, currency_to, amount_to) 
+                    values (:date, :time, :currency_from, :amount_from, :currency_to, :amount_to);"""
+
+    dbManager.insertSQL(add, request.json)
+
+    return jsonify({"status": "success"})
 
 

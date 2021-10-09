@@ -27,7 +27,16 @@ class DBManager():
         conexion.close()
         return registros
 
-    
+    def insertSQL(self, consulta, params):
+        conexion = sqlite3.connect(self.database_path)
+
+        cur = conexion.cursor()
+
+        cur.execute(consulta, params)
+        conexion.commit()
+        conexion.close()
+
+
 
 
 
