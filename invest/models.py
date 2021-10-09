@@ -27,6 +27,7 @@ class DBManager():
         conexion.close()
         return registros
 
+    
 
 
 

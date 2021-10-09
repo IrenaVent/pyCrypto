@@ -28,7 +28,7 @@ function showInvesments() {
     } else {
         const response = JSON.parse(this.responseText);
         const errorMessageDiv = document.querySelector("#error-message");
-        const errorHTML = `<p>${response.message}</p>`;
+        const errorHTML = `<p>Database access error: ${response.message}</p>`;
         errorMessageDiv.innerHTML = errorHTML;
     }
 }
