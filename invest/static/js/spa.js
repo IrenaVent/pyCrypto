@@ -1,5 +1,6 @@
 const investmentsListRequest = new XMLHttpRequest();
 const addTransactionRequest = new XMLHttpRequest();
+const checkSufficientBalanceRequest = new XMLHttpRequest();
 
 const root_host = "http://127.0.0.1:5000/api/v1/";
 
@@ -79,6 +80,26 @@ function loadCurrencyList(selector) {
     currencyListSelect.innerHTML += currencyListHTML;
 }
 
+// function checkSufficientBalance() {
+//     ev.preventDefault();
+//     const currency_from = document.querySelector("#currency-from").value;
+//     const currency_to = document.querySelector("#currency-to").value;
+
+//     json = {
+//         currency_from: currency_from,
+//         currency_to: currency_to,
+//     };
+
+//     const url = `${root_host}investment`;
+//     checkSufficientBalanceRequest.open("POST", url, true);
+//     checkSufficientBalanceRequest.setRequestHeader(
+//         "Content-Type",
+//         "application/json"
+//     );
+//     checkSufficientBalanceRequest.onload = requestAddTransaction;
+//     checkSufficientBalanceRequest.send(JSON.stringify(json));
+// }
+
 function loadAmoutUnitPrice(ev) {
     ev.preventDefault();
     const amountTo = document.querySelector("#amount-to");
@@ -88,15 +109,21 @@ function loadAmoutUnitPrice(ev) {
 }
 
 // TODO refactor
-function cleanAmoutUnitPrice() {
+function cleanForm() {
+    const currencyFrom = document.querySelector("#currency-from");
     const amountFrom = document.querySelector("#amount-from");
-    amountFrom.value = "";
+    const currencyTo = document.querySelector("#currency-to");
     const amountTo = document.querySelector("#amount-to");
-    amountTo.value = "";
     const unitePrice = document.querySelector("#unit-price");
+
+    currencyFrom.value = "default";
+    amountFrom.value = "";
+    currencyTo.value = "default";
+    amountTo.value = "";
     unitePrice.value = "";
 }
 
+// TODO refactor
 function addTransaction(ev) {
     ev.preventDefault();
 
@@ -128,12 +155,12 @@ function addTransaction(ev) {
         amount_to: amount_to,
     };
 
-    const url = `${root_host}investments`;
+    const url = `${root_host}investment`;
     addTransactionRequest.open("POST", url, true);
     addTransactionRequest.setRequestHeader("Content-Type", "application/json");
     addTransactionRequest.onload = requestAddTransaction;
     addTransactionRequest.send(JSON.stringify(json));
-    cleanAmoutUnitPrice();
+    cleanForm();
 }
 
 window.onload = function () {

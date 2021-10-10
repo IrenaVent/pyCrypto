@@ -33,7 +33,6 @@ def transactions_list():
 
 @app.route("/api/v1/investments/<int:id>", methods=['GET'])
 def transaction(id):
-
     try: 
         transaction_request = """SELECT id, date, time, currency_from, amount_from, currency_to, amount_to
                                     FROM investments 
@@ -57,12 +56,15 @@ def transaction(id):
             }
         return jsonify(error), 400
 
-@app.route("/api/v1/investments", methods=["POST"])
+@app.route("/api/v1/investment", methods=["POST"])
 def add_transaction():
     add = """INSERT INTO investments (date, time, currency_from, amount_from, currency_to, amount_to) 
                     values (:date, :time, :currency_from, :amount_from, :currency_to, :amount_to);"""
 
+    print("soy request.json ------>", request.json)
+    print("soy len(request.json) ------>", len(request.json))
     dbManager.insertSQL(add, request.json)
+
 
     return jsonify({"status": "success"})
 
