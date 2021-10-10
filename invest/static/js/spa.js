@@ -1,6 +1,8 @@
 const investmentsListRequest = new XMLHttpRequest();
 const addTransactionRequest = new XMLHttpRequest();
-const checkSufficientBalanceRequest = new XMLHttpRequest();
+const checkEnoughBalanceRequest = new XMLHttpRequest();
+
+// x.toFixed(2) to format price
 
 const root_host = "http://127.0.0.1:5000/api/v1/";
 
@@ -31,6 +33,18 @@ function requestAddTransaction() {
         investmentsListRequest.send();
     } else {
         alert("Se ha producido un error en el alta");
+    }
+}
+
+function requestCoinAPITransaction() {
+    if (this.readyState === 4 && this.status === 200) {
+        const response = JSON.parse(this.responseText);
+
+        const amountTo = document.querySelector("#amount-to");
+        amountTo.value = response["amount-to"].toFixed(4);
+
+        const unitePrice = document.querySelector("#unit-price");
+        unitePrice.value = response["unit-price"].toFixed(4);
     }
 }
 
@@ -80,47 +94,35 @@ function loadCurrencyList(selector) {
     currencyListSelect.innerHTML += currencyListHTML;
 }
 
-// function checkSufficientBalance() {
-//     ev.preventDefault();
-//     const currency_from = document.querySelector("#currency-from").value;
-//     const currency_to = document.querySelector("#currency-to").value;
-
-//     json = {
-//         currency_from: currency_from,
-//         currency_to: currency_to,
-//     };
-
-//     const url = `${root_host}investment`;
-//     checkSufficientBalanceRequest.open("POST", url, true);
-//     checkSufficientBalanceRequest.setRequestHeader(
-//         "Content-Type",
-//         "application/json"
-//     );
-//     checkSufficientBalanceRequest.onload = requestAddTransaction;
-//     checkSufficientBalanceRequest.send(JSON.stringify(json));
-// }
-
-function loadAmoutUnitPrice(ev) {
+function checkEnoughBalance(ev) {
     ev.preventDefault();
-    const amountTo = document.querySelector("#amount-to");
-    amountTo.value = 200;
-    const unitePrice = document.querySelector("#unit-price");
-    unitePrice.value = 10;
+    const currency_from = document.querySelector("#currency-from").value;
+    const amount_from = document.querySelector("#amount-from").value;
+    const currency_to = document.querySelector("#currency-to").value;
+
+    json = {
+        currency_from: currency_from,
+        amount_from: amount_from,
+        currency_to: currency_to,
+    };
+
+    const url = `${root_host}investment`;
+    checkEnoughBalanceRequest.open("POST", url, true);
+    checkEnoughBalanceRequest.setRequestHeader(
+        "Content-Type",
+        "application/json"
+    );
+    checkEnoughBalanceRequest.send(JSON.stringify(json));
+    checkEnoughBalanceRequest.onload = requestCoinAPITransaction;
 }
 
 // TODO refactor
 function cleanForm() {
-    const currencyFrom = document.querySelector("#currency-from");
-    const amountFrom = document.querySelector("#amount-from");
-    const currencyTo = document.querySelector("#currency-to");
-    const amountTo = document.querySelector("#amount-to");
-    const unitePrice = document.querySelector("#unit-price");
-
-    currencyFrom.value = "default";
-    amountFrom.value = "";
-    currencyTo.value = "default";
-    amountTo.value = "";
-    unitePrice.value = "";
+    document.querySelector("#currency-from").value = "default";
+    document.querySelector("#amount-from").value = "";
+    document.querySelector("#currency-to").value = "default";
+    document.querySelector("#amount-to").value = "";
+    document.querySelector("#unit-price").value = "";
 }
 
 // TODO refactor
@@ -141,6 +143,7 @@ function addTransaction(ev) {
         currentDate.getMinutes() +
         ":" +
         currentDate.getSeconds();
+
     const currency_from = document.querySelector("#currency-from").value;
     const amount_from = document.querySelector("#amount-from").value;
     const currency_to = document.querySelector("#currency-to").value;
@@ -158,8 +161,8 @@ function addTransaction(ev) {
     const url = `${root_host}investment`;
     addTransactionRequest.open("POST", url, true);
     addTransactionRequest.setRequestHeader("Content-Type", "application/json");
-    addTransactionRequest.onload = requestAddTransaction;
     addTransactionRequest.send(JSON.stringify(json));
+    addTransactionRequest.onload = requestAddTransaction;
     cleanForm();
 }
 
@@ -182,7 +185,7 @@ window.onload = function () {
     currencyListTo.addEventListener("click", loadCurrencyList("currency-to"));
 
     const convertBTN = document.getElementById("convert-button");
-    convertBTN.addEventListener("click", loadAmoutUnitPrice);
+    convertBTN.addEventListener("click", checkEnoughBalance);
 
     const submintBTN = document.getElementById("submit-button");
     submintBTN.addEventListener("click", addTransaction);

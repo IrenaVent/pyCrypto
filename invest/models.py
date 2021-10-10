@@ -1,4 +1,9 @@
 import sqlite3
+from invest import app
+import requests
+
+apikey = app.config.get("APIKEY")
+
 
 class DBManager():
     def __init__(self, database_path):
@@ -35,6 +40,34 @@ class DBManager():
         cur.execute(consulta, params)
         conexion.commit()
         conexion.close()
+
+    def checkBalanceSQL(self, consulta, params = []):
+        conexion = sqlite3.connect(self.database_path)
+
+        cur = conexion.cursor()
+
+        try:
+            cur.execute(consulta,params)
+            total_sum = cur.fetchone()[0]
+
+        except:
+            total_sum = 0
+        
+        conexion.close()
+
+        return total_sum
+
+class requestCoinAPI():
+    def __init__(self, url):
+        self.url = url
+    
+    def requestCoin(self, currency_from, currency_to):
+        headers = {"X-CoinAPI-Key": apikey}
+        self.currency_from = currency_from
+        self.currency_to = currency_to
+        request = requests.get((self.url).format(self.currency_from, self.currency_to), headers = headers)
+        return request.json()["rate"]
+
 
 
 
