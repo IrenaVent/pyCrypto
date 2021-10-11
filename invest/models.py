@@ -54,7 +54,7 @@ class DBManager():
             total_sum = 0
         
         conexion.close()
-
+        
         return total_sum
 
 class requestCoinAPI():

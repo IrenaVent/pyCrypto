@@ -32,12 +32,19 @@ function requestAddTransaction() {
         investmentsListRequest.onload = showInvesments;
         investmentsListRequest.send();
     } else {
-        alert("Se ha producido un error en el alta");
+        const response = JSON.parse(this.responseText);
+        const errorMessageDiv = document.querySelector("#error-message");
+        const errorHTML = `<p>Database access error: ${response.message}</p>`;
+        errorMessageDiv.innerHTML = errorHTML;
     }
 }
 
 function requestCoinAPITransaction() {
-    if (this.readyState === 4 && this.status === 200) {
+    const errorMessageDiv = document.querySelector("#error-message");
+    const errorHTML = "";
+    errorMessageDiv.innerHTML = errorHTML;
+
+    if (this.readyState === 4 && this.status === 201) {
         const response = JSON.parse(this.responseText);
 
         const amountTo = document.querySelector("#amount-to");
@@ -45,6 +52,11 @@ function requestCoinAPITransaction() {
 
         const unitePrice = document.querySelector("#unit-price");
         unitePrice.value = response["unit-price"].toFixed(4);
+    } else {
+        const response = JSON.parse(this.responseText);
+        const errorMessageDiv = document.querySelector("#error-message");
+        const errorHTML = `<p>${response.message}</p>`;
+        errorMessageDiv.innerHTML = errorHTML;
     }
 }
 
@@ -101,6 +113,7 @@ function checkEnoughBalance(ev) {
     const currency_to = document.querySelector("#currency-to").value;
 
     json = {
+        message: "convert",
         currency_from: currency_from,
         amount_from: amount_from,
         currency_to: currency_to,
@@ -150,6 +163,7 @@ function addTransaction(ev) {
     const amount_to = document.querySelector("#amount-to").value;
 
     json = {
+        message: "add_transaction",
         date: date,
         time: time,
         currency_from: currency_from,

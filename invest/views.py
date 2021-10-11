@@ -4,10 +4,9 @@ from invest.models import DBManager, requestCoinAPI
 
 database_path = app.config.get("DATABASEPATH")
 dbManager = DBManager(database_path)
+
 url = "https://rest.coinapi.io/v1/exchangerate/{}/{}"
 requestToCoinAPI = requestCoinAPI(url)
-
-# dbManager = DBManager("data/investments.db") 
 
 @app.route("/")
 def index():
@@ -59,31 +58,71 @@ def transaction(id):
         return jsonify(error), 400
 
 @app.route("/api/v1/investment", methods=["POST"])
-def add_transaction():
+def new_transaction():
 
-    if request.json["currency_from"] != "EUR":
+    if request.json["message"] == "convert":
+        
+        if request.json["currency_from"] != "EUR":
+            balance = check_balance_currency()
+            print ("Hola soy balance desde new_trasn------>", balance)
 
-        check_balance_to = f"""SELECT SUM (amount_to) FROM investments WHERE currency_to = "{request.json["currency_from"]}";"""
-        check_balance_from = f"""SELECT SUM (amount_from) FROM investments WHERE currency_from = {request.json["currency_from"]};"""
+            if balance >= int(request.json["amount_from"]):
+                return request_coinAPI()
+            
+            else:
+                error = {
+                    "status": "fail",
+                    "message": "Not enough balance"
+                    }
+                return jsonify(error), 200
 
-        total_to = dbManager.checkBalanceSQL(check_balance_to)
-        total_from = dbManager.checkBalanceSQL(check_balance_from)
-        balance = total_to - total_from
-
-        if balance >= int(request.json["amount_from"]):
-            requestCoinAPI = float(requestToCoinAPI.requestCoin(request.json["currency_from"], request.json["currency_to"]))
-            print("soy respuesta de COINAPI----->", requestCoinAPI)
-            respuesta = {
-                "amount-to": requestCoinAPI * int(request.json["amount_from"]),
-                "unit-price": requestCoinAPI 
-            }
-            return jsonify(respuesta)
+        else:
+            return request_coinAPI()
 
     else:
+        try:
+            add = """INSERT INTO investments (date, time, currency_from, amount_from, currency_to, amount_to) 
+                            values (:date, :time, :currency_from, :amount_from, :currency_to, :amount_to);"""
+
+            dbManager.insertSQL(add, request.json)
+
+            return jsonify({"status": "success"})
+
+        except Exception as error:
+            error = {
+                "status": "fail",
+                "message": str(error)
+                }
+            return jsonify(error), 400
+
+def check_balance_currency():
+    check_balance_to = f"""SELECT SUM (amount_to) FROM investments WHERE currency_to = "{request.json["currency_from"]}";"""
+    check_balance_from = f"""SELECT SUM (amount_from) FROM investments WHERE currency_from = "{request.json["currency_from"]}";"""
+
+    total_to = dbManager.checkBalanceSQL(check_balance_to)
+    total_from = dbManager.checkBalanceSQL(check_balance_from)
+
+    balance = total_to - total_from
+
+    return balance
+
+def request_coinAPI():
     
-        add = """INSERT INTO investments (date, time, currency_from, amount_from, currency_to, amount_to) 
-                        values (:date, :time, :currency_from, :amount_from, :currency_to, :amount_to);"""
+    try:
+        requestCoinAPI = float(requestToCoinAPI.requestCoin(request.json["currency_from"], request.json["currency_to"]))
+        respuesta = {
+            "status": "success",
+            "amount-to": requestCoinAPI * int(request.json["amount_from"]),
+            "unit-price": requestCoinAPI 
+        }
+        return jsonify(respuesta), 201
 
-        dbManager.insertSQL(add, request.json)
+    except Exception as error:
+        error = {
+            "status": "fail",
+            "message": str(error)
+            }
+        return jsonify(error), 400
 
-        return jsonify({"status": "success"})
+
+
