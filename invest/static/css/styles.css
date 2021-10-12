@@ -59,11 +59,27 @@ td {
 }
 
 .transaction-register-container.disable {
-    /* display: none; */
+    display: none;
 }
 
 #error-message {
     color: red;
+    background-color: var(--color-p);
+    font-family: "Cutive Mono";
+}
+
+#error-message-1 {
+    color: red;
+    background-color: var(--color-p);
+    font-family: "Cutive Mono";
+}
+
+#no-transactions-message {
+    color: var(--color-a);
+    font-size: 14px;
+    font-family: "Cutive Mono";
+    background-color: aquamarine;
+    border-radius: 4px;
 }
 
 .transaction-register-container > * {
@@ -100,6 +116,26 @@ td {
 
 .transaction-buttons {
     display: flex;
+}
+
+#add-button {
+    color: var(--color-s);
+    font-family: "Cutive Mono";
+    margin: 10px 0px;
+}
+
+#convert-button {
+    color: var(--color-s);
+    font-family: "Cutive Mono";
+}
+
+#save-btn {
+    color: var(--color-s);
+    font-family: "Cutive Mono";
+}
+
+#save-btn.disable {
+    display: none;
 }
 
 .note-footer {

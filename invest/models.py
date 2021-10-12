@@ -46,15 +46,13 @@ class DBManager():
 
         cur = conexion.cursor()
 
-        try:
-            cur.execute(consulta,params)
-            total_sum = cur.fetchone()[0]
+        cur.execute(consulta,params)
+        total_sum = cur.fetchone()[0]
 
-        except:
+        if total_sum == None:
             total_sum = 0
         
         conexion.close()
-        
         return total_sum
 
 class requestCoinAPI():

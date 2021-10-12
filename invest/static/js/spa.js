@@ -29,7 +29,7 @@ function requestAddTransaction() {
 
         const url = `${root_host}investments`;
         investmentsListRequest.open("GET", url, true);
-        investmentsListRequest.onload = showInvesments;
+        investmentsListRequest.onload = loadInvesments;
         investmentsListRequest.send();
     } else {
         const response = JSON.parse(this.responseText);
@@ -52,6 +52,9 @@ function requestCoinAPITransaction() {
 
         const unitePrice = document.querySelector("#unit-price");
         unitePrice.value = response["unit-price"].toFixed(4);
+
+        const saveBtn = document.querySelector("#save-btn");
+        saveBtn.classList.remove("disable");
     } else {
         const response = JSON.parse(this.responseText);
         const errorMessageDiv = document.querySelector("#error-message");
@@ -60,28 +63,37 @@ function requestCoinAPITransaction() {
     }
 }
 
-function showInvesments() {
+function loadInvesments() {
     if (this.readyState === 4 && this.status === 200) {
         const response = JSON.parse(this.responseText);
         const investments = response.investments;
 
-        const tableInvestments = document.querySelector("#investments-table");
+        if (investments.length != 0) {
+            const tableInvestments =
+                document.querySelector("#investments-table");
 
-        let transactionsHTML = "";
+            let transactionsHTML = "";
 
-        for (let i = 0; i < investments.length; i++) {
-            transactionsHTML =
-                transactionsHTML +
-                `<tr>
-                <td>${investments[i].date}</td>
-                <td>${investments[i].time}</td>
-                <td>${investments[i].currency_from}</td>
-                <td class="form-number-column">${investments[i].amount_from}</td>
-                <td>${investments[i].currency_to}</td>
-                <td class="form-number-column">${investments[i].amount_to}</td>
-            </tr>`;
+            for (let i = 0; i < investments.length; i++) {
+                transactionsHTML =
+                    transactionsHTML +
+                    `<tr>
+                    <td>${investments[i].date}</td>
+                    <td>${investments[i].time}</td>
+                    <td>${investments[i].currency_from}</td>
+                    <td class="form-number-column">${investments[i].amount_from}</td>
+                    <td>${investments[i].currency_to}</td>
+                    <td class="form-number-column">${investments[i].amount_to}</td>
+                </tr>`;
+            }
+            tableInvestments.innerHTML = transactionsHTML;
+        } else {
+            const noTransactionsMessageDiv = document.querySelector(
+                "#no-transactions-message"
+            );
+            const messageHTML = `<p>There are no transactions. Add one to start investing</p>`;
+            noTransactionsMessageDiv.innerHTML = messageHTML;
         }
-        tableInvestments.innerHTML = transactionsHTML;
     } else {
         const response = JSON.parse(this.responseText);
         const errorMessageDiv = document.querySelector("#error-message");
@@ -94,6 +106,8 @@ function showFormNewTrasnaction(ev) {
     ev.preventDefault();
     const form = document.querySelector("#transaction-form");
     form.classList.remove("disable");
+    const saveBtn = document.querySelector("#save-btn");
+    saveBtn.classList.add("disable");
 }
 
 function loadCurrencyList(selector) {
@@ -101,13 +115,36 @@ function loadCurrencyList(selector) {
     let currencyListHTML;
     for (let i = 0; i < currencyList.length; i++) {
         currencyListHTML += `
-        <option value="${currencyList[i]}">${currencyList[i]}</option>`;
+        <option value="${currencyList[i]}" name="${currencyList[i]}">${currencyList[i]}</option>`;
     }
     currencyListSelect.innerHTML += currencyListHTML;
 }
 
-function checkEnoughBalance(ev) {
+function validateInputsFromButtonConvert(ev) {
     ev.preventDefault();
+
+    const currency_from = document.querySelector("#currency-from");
+    const amount_from = document.querySelector("#amount-from");
+    const currency_to = document.querySelector("#currency-to");
+
+    if (
+        currency_from.value == "" ||
+        amount_from.value == "" ||
+        currency_to.value == ""
+    ) {
+        const errorMessageDiv = document.querySelector("#error-message");
+        const errorHTML = `<p>Please fill the form</p>`;
+        errorMessageDiv.innerHTML = errorHTML;
+    } else if (currency_from.value == currency_to.value) {
+        const errorMessageDiv = document.querySelector("#error-message");
+        const errorHTML = `<p>Currencies should be different</p>`;
+        errorMessageDiv.innerHTML = errorHTML;
+    } else {
+        checkEnoughBalance();
+    }
+}
+
+function checkEnoughBalance() {
     const currency_from = document.querySelector("#currency-from").value;
     const amount_from = document.querySelector("#amount-from").value;
     const currency_to = document.querySelector("#currency-to").value;
@@ -183,7 +220,7 @@ function addTransaction(ev) {
 window.onload = function () {
     const url = `${root_host}investments`;
     investmentsListRequest.open("GET", url, true);
-    investmentsListRequest.onload = showInvesments;
+    investmentsListRequest.onload = loadInvesments;
     investmentsListRequest.send();
 
     const addBTN = document.querySelector("#add-button");
@@ -199,8 +236,8 @@ window.onload = function () {
     currencyListTo.addEventListener("click", loadCurrencyList("currency-to"));
 
     const convertBTN = document.getElementById("convert-button");
-    convertBTN.addEventListener("click", checkEnoughBalance);
+    convertBTN.addEventListener("click", validateInputsFromButtonConvert);
 
-    const submintBTN = document.getElementById("submit-button");
-    submintBTN.addEventListener("click", addTransaction);
+    const submitBTN = document.getElementById("save-btn");
+    submitBTN.addEventListener("click", addTransaction);
 };

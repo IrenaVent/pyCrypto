@@ -15,6 +15,7 @@
         <section>
             <div class="transactions-container">
                 <h1 class="table-title">Transactions</h1>
+                <div id="no-transactions-message"></div>
                 <table class="transactions-table">
                     <thead class="table-head">
                         <tr>
@@ -56,8 +57,12 @@
             <div class="form-from">
                 <form>
                     <label>From</label>
-                    <select id="currency-from" class="currency-list">
-                        <option value="default" selected disabled>
+                    <select
+                        id="currency-from"
+                        class="currency-list"
+                        name="currency-from"
+                    >
+                        <option value="" selected disabled>
                             Select a currency
                         </option>
                         <!-- js dynamic currency list -->
@@ -74,8 +79,12 @@
             <div class="form-to">
                 <form>
                     <label>To</label>
-                    <select id="currency-to" class="currency-list">
-                        <option value="default" selected disabled>
+                    <select
+                        id="currency-to"
+                        class="currency-list"
+                        name="currency-to"
+                    >
+                        <option value="" selected disabled>
                             Select a currency
                         </option>
                         <!-- js dynamic currency list -->
@@ -89,7 +98,9 @@
                 </form>
             </div>
             <div class="transaction-buttons">
-                <button type="submit" id="submit-button">OK</button>
+                <button type="submit" id="save-btn" class="disable">
+                    save
+                </button>
             </div>
         </div>
 

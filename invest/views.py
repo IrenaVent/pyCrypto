@@ -64,9 +64,8 @@ def new_transaction():
         
         if request.json["currency_from"] != "EUR":
             balance = check_balance_currency()
-            print ("Hola soy balance desde new_trasn------>", balance)
-
-            if balance >= int(request.json["amount_from"]):
+            
+            if balance >= float(request.json["amount_from"]):
                 return request_coinAPI()
             
             else:
@@ -112,7 +111,7 @@ def request_coinAPI():
         requestCoinAPI = float(requestToCoinAPI.requestCoin(request.json["currency_from"], request.json["currency_to"]))
         respuesta = {
             "status": "success",
-            "amount-to": requestCoinAPI * int(request.json["amount_from"]),
+            "amount-to": requestCoinAPI * float(request.json["amount_from"]),
             "unit-price": requestCoinAPI 
         }
         return jsonify(respuesta), 201
