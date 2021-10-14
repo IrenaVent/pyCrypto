@@ -1,6 +1,7 @@
 const investmentsListRequest = new XMLHttpRequest();
 const addTransactionRequest = new XMLHttpRequest();
 const checkEnoughBalanceRequest = new XMLHttpRequest();
+const statusBalanceRequest = new XMLHttpRequest();
 
 // x.toFixed(2) to format price
 
@@ -78,21 +79,25 @@ function loadInvesments() {
                 transactionsHTML =
                     transactionsHTML +
                     `<tr>
-                    <td>${investments[i].date}</td>
-                    <td>${investments[i].time}</td>
-                    <td>${investments[i].currency_from}</td>
-                    <td class="form-number-column">${investments[i].amount_from}</td>
-                    <td>${investments[i].currency_to}</td>
-                    <td class="form-number-column">${investments[i].amount_to}</td>
+                <td>${investments[i].date}</td>
+                <td>${investments[i].time}</td>
+                <td>${investments[i].currency_from}</td>
+                <td class="form-number-column">${investments[i].amount_from}</td>
+                <td>${investments[i].currency_to}</td>
+                <td class="form-number-column">${investments[i].amount_to}</td>
                 </tr>`;
             }
             tableInvestments.innerHTML = transactionsHTML;
+            requestStatus();
         } else {
             const noTransactionsMessageDiv = document.querySelector(
                 "#no-transactions-message"
             );
-            const messageHTML = `<p>There are no transactions. Add one to start investing</p>`;
+            const messageHTML = `<p>No transactions. Add one to start.</p>`;
             noTransactionsMessageDiv.innerHTML = messageHTML;
+
+            const tableStatus = document.querySelector(".status-container");
+            tableStatus.classList.add("disable");
         }
     } else {
         const response = JSON.parse(this.responseText);
@@ -100,6 +105,41 @@ function loadInvesments() {
         const errorHTML = `<p>Database access error: ${response.message}</p>`;
         errorMessageDiv.innerHTML = errorHTML;
     }
+}
+
+function loadStatus() {
+    const tableStatus = document.querySelector(".status-container");
+    tableStatus.classList.remove("disable");
+
+    if (this.readyState === 4 && this.status === 200) {
+        const response = JSON.parse(this.responseText);
+        const valueStatus = response.data;
+
+        const statusTable = document.querySelector("#status-table");
+        const investedHTML = `<td>${valueStatus["invested"].toFixed(4)}</td>`;
+        const totalHTML = `<td>${valueStatus["total"].toFixed(4)}</td>`;
+        const outcomeHTML = `<td>${valueStatus["outcome"].toFixed(4)}</td>`;
+        statusTable.innerHTML = investedHTML + totalHTML + outcomeHTML;
+
+        if (valueStatus["outcome"].toFixed(4) <= 0) {
+            const statusTable = document
+                .querySelector("#status-table")
+                .getElementsByTagName("td");
+            statusTable[2].style.color = "red";
+        }
+    } else {
+        const response = JSON.parse(this.responseText);
+        const errorMessageDiv = document.querySelector("#error-message");
+        const errorHTML = `<p>CoinAPI request error: ${response.message}</p>`;
+        errorMessageDiv.innerHTML = errorHTML;
+    }
+}
+
+function requestStatus() {
+    const url = `${root_host}status`;
+    statusBalanceRequest.open("GET", url, true);
+    statusBalanceRequest.onload = loadStatus;
+    statusBalanceRequest.send();
 }
 
 function showFormNewTrasnaction(ev) {

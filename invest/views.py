@@ -63,7 +63,7 @@ def new_transaction():
     if request.json["message"] == "convert":
         
         if request.json["currency_from"] != "EUR":
-            balance = check_balance_currency()
+            balance = check_balance_currency(request.json["currency_from"])
             
             if balance >= float(request.json["amount_from"]):
                 return request_coinAPI()
@@ -94,9 +94,9 @@ def new_transaction():
                 }
             return jsonify(error), 400
 
-def check_balance_currency():
-    check_balance_to = f"""SELECT SUM (amount_to) FROM investments WHERE currency_to = "{request.json["currency_from"]}";"""
-    check_balance_from = f"""SELECT SUM (amount_from) FROM investments WHERE currency_from = "{request.json["currency_from"]}";"""
+def check_balance_currency(coin):
+    check_balance_to = f"""SELECT SUM (amount_to) FROM investments WHERE currency_to = "{coin}";"""
+    check_balance_from = f"""SELECT SUM (amount_from) FROM investments WHERE currency_from = "{coin}";"""
 
     total_to = dbManager.checkBalanceSQL(check_balance_to)
     total_from = dbManager.checkBalanceSQL(check_balance_from)
@@ -122,6 +122,49 @@ def request_coinAPI():
             "message": str(error)
             }
         return jsonify(error), 400
+
+@app.route("/api/v1/status")
+def all_transactions():
+
+    try:
+        coins_currency = dbManager.getCoinCurrency("SELECT * FROM investments ORDER BY date;")
+        
+        total = 0
+        for coin in coins_currency:
+            balance = check_balance_currency(coin)
+            requestCoinAPI = float(requestToCoinAPI.requestCoin(f"{coin}", "EUR"))
+            coin_total = balance * requestCoinAPI
+            total += coin_total
+
+        check_balance_from = """SELECT SUM (amount_from) FROM investments WHERE currency_from = "EUR";"""
+        invested = dbManager.checkBalanceSQL(check_balance_from)
+
+        outcome = total - invested
+
+        respuesta = {
+                "status": "success",
+                "data": {"invested": invested, "total": total, "outcome": outcome,}
+            }
+        return jsonify(respuesta), 200
+
+    except Exception as error:
+        error = {
+            "status": "fail",
+            "message": str(error)
+            }
+        return jsonify(error), 400
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

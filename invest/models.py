@@ -32,6 +32,19 @@ class DBManager():
         conexion.close()
         return registros
 
+    def getCoinCurrency(self, query, params = []):
+
+        transactions = self.querySQL(query)
+    
+        coins_currency = []
+        for transaction in transactions:
+            if transaction["currency_from"] not in coins_currency and transaction["currency_from"] != "EUR":
+                coins_currency.append(transaction["currency_from"])
+            if transaction["currency_to"] not in coins_currency and transaction["currency_to"] != "EUR":
+                coins_currency.append(transaction["currency_to"])
+
+        return coins_currency
+
     def insertSQL(self, consulta, params):
         conexion = sqlite3.connect(self.database_path)
 

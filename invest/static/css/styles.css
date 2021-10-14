@@ -21,7 +21,6 @@
     font-size: 14px;
     font-family: "Cutive Mono";
     line-height: 2em;
-    line-height: 2em;
     padding: 10px 10px;
     width: 100%;
 }
@@ -135,6 +134,22 @@ td {
 }
 
 #save-btn.disable {
+    display: none;
+}
+
+.status-container {
+    /* box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12); */
+    border: solid 1px var(--color-s);
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: "Cutive Mono";
+    line-height: 2em;
+    padding: 10px 10px;
+    width: 50%;
+    margin: 10px 0px;
+}
+
+.status-container.disable {
     display: none;
 }
 
