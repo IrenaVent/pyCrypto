@@ -93,7 +93,7 @@ function loadInvesments() {
             const noTransactionsMessageDiv = document.querySelector(
                 "#no-transactions-message"
             );
-            const messageHTML = `<p>No transactions. Add one to start.</p>`;
+            const messageHTML = `<p>No transactions yet. Add your first one to start.</p>`;
             noTransactionsMessageDiv.innerHTML = messageHTML;
 
             const tableStatus = document.querySelector(".status-container");
