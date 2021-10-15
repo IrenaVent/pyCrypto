@@ -6,6 +6,7 @@ database_path = app.config.get("DATABASEPATH")
 dbManager = DBManager(database_path)
 
 url = "https://rest.coinapi.io/v1/exchangerate/{}/{}"
+
 requestToCoinAPI = requestCoinAPI(url)
 
 @app.route("/")
@@ -124,11 +125,12 @@ def request_coinAPI():
         return jsonify(error), 400
 
 @app.route("/api/v1/status")
-def all_transactions():
+def investments_status():
 
     try:
         coins_currency = dbManager.getCoinCurrency("SELECT * FROM investments ORDER BY date;")
         
+        # balance € coins
         total = 0
         for coin in coins_currency:
             balance = check_balance_currency(coin)
@@ -136,9 +138,11 @@ def all_transactions():
             coin_total = balance * requestCoinAPI
             total += coin_total
 
+        # total invested € 
         check_balance_from = """SELECT SUM (amount_from) FROM investments WHERE currency_from = "EUR";"""
         invested = dbManager.checkBalanceSQL(check_balance_from)
 
+        # outcome € 
         outcome = total - invested
 
         respuesta = {

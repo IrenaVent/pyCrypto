@@ -69,7 +69,7 @@ class DBManager():
         return total_sum
 
 class requestCoinAPI():
-    def __init__(self, url):
+    def __init__(self, url, params = []):
         self.url = url
     
     def requestCoin(self, currency_from, currency_to):
@@ -78,6 +78,8 @@ class requestCoinAPI():
         self.currency_to = currency_to
         request = requests.get((self.url).format(self.currency_from, self.currency_to), headers = headers)
         return request.json()["rate"]
+
+        
 
 
 
