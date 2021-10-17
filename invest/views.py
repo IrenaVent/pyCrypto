@@ -1,13 +1,14 @@
 from invest import app
 from flask import jsonify, render_template, request
-from invest.models import DBManager, requestCoinAPI
+from invest.models import DBManager, RQCoinAPI
 
 database_path = app.config.get("DATABASEPATH")
 dbManager = DBManager(database_path)
 
 url = "https://rest.coinapi.io/v1/exchangerate/{}/{}"
-
-requestToCoinAPI = requestCoinAPI(url)
+url_s = "https://rest.coinapi.io/v1/assets/{}"
+requestToCoinAPI = RQCoinAPI(url)
+requestToCoinAPIStatus = RQCoinAPI(url_s)
 
 @app.route("/")
 def index():
@@ -129,16 +130,22 @@ def investments_status():
 
     try:
         coins_currency = dbManager.getCoinCurrency("SELECT * FROM investments ORDER BY date;")
+        coins = "EUR,"
+        for coin in coins_currency:
+            coins += f"{coin},"
+
+        usd_values_currency = requestToCoinAPIStatus.requestCoinStatus(coins)
         
-        # balance € coins
-        total = 0
+        # total = balance € form coins
+        usd_total_coins = 0
         for coin in coins_currency:
             balance = check_balance_currency(coin)
-            requestCoinAPI = float(requestToCoinAPI.requestCoin(f"{coin}", "EUR"))
-            coin_total = balance * requestCoinAPI
-            total += coin_total
+            usd_total_coin = balance * usd_values_currency[f"{coin}"]
+            usd_total_coins += usd_total_coin
 
-        # total invested € 
+        total = usd_total_coins / usd_values_currency["EUR"]
+
+        # invested € 
         check_balance_from = """SELECT SUM (amount_from) FROM investments WHERE currency_from = "EUR";"""
         invested = dbManager.checkBalanceSQL(check_balance_from)
 

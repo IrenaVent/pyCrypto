@@ -17,7 +17,6 @@ const currencyList = [
     "XRP",
     "BCH",
     "USDT",
-    "BSV",
     "ADA",
 ];
 

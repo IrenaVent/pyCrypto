@@ -68,7 +68,7 @@ class DBManager():
         conexion.close()
         return total_sum
 
-class requestCoinAPI():
+class RQCoinAPI():
     def __init__(self, url, params = []):
         self.url = url
     
@@ -79,8 +79,18 @@ class requestCoinAPI():
         request = requests.get((self.url).format(self.currency_from, self.currency_to), headers = headers)
         return request.json()["rate"]
 
-        
+    def requestCoinStatus(self, params):
+        headers = {"X-CoinAPI-Key": apikey}
+        self.params = params
 
+        request = requests.get((self.url).format(self.params), headers = headers)
+        dicUSDValues = request.json()
+
+        dicValues = {}
+        for dicCoin in dicUSDValues:
+            dicValues.update({dicCoin['asset_id']:dicCoin['price_usd']})
+
+        return dicValues
 
 
 
