@@ -56,6 +56,13 @@ function requestCoinAPITransaction() {
 
         const saveBtn = document.querySelector("#save-btn");
         saveBtn.classList.remove("disable");
+
+        const currency_from = document.querySelector("#currency-from");
+        currency_from.setAttribute("disabled", true);
+        const amount_from = document.querySelector("#amount-from");
+        amount_from.setAttribute("disabled", true);
+        const currency_to = document.querySelector("#currency-to");
+        currency_to.setAttribute("disabled", true);
     } else {
         errorMessage(response, "CoinApi request error");
     }
@@ -212,6 +219,12 @@ function cleanForm() {
     document.querySelector("#currency-to").value = "default";
     document.querySelector("#amount-to").value = "";
     document.querySelector("#unit-price").value = "";
+    const currency_from = document.querySelector("#currency-from");
+    currency_from.removeAttribute("disabled");
+    const amount_from = document.querySelector("#amount-from");
+    amount_from.removeAttribute("disabled");
+    const currency_to = document.querySelector("#currency-to");
+    currency_to.removeAttribute("disabled");
 }
 
 function createTime(date) {
