@@ -57,10 +57,6 @@ td {
     border-radius: 4px;
 }
 
-.transaction-register-container.disable {
-    display: none;
-}
-
 #error-message {
     color: red;
     background-color: var(--color-p);
@@ -117,7 +113,8 @@ td {
     display: flex;
 }
 
-#add-button {
+#add-button,
+#cancel-button {
     color: var(--color-s);
     font-family: "Cutive Mono";
     margin: 10px 0px;
@@ -133,10 +130,6 @@ td {
     font-family: "Cutive Mono";
 }
 
-#save-btn.disable {
-    display: none;
-}
-
 .status-container {
     /* box-shadow: 0 1px 1px 0 #5c7aea, 0 1px 0px 0px #5c7aea, 0 1px 4px 0 #5c7aea; */
     border: solid 1px var(--color-s);
@@ -150,7 +143,7 @@ td {
     display: grid;
 }
 
-.status-container.disable {
+.disable {
     display: none;
 }
 

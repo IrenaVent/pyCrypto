@@ -149,10 +149,24 @@ function requestStatus() {
 
 function showFormNewTrasnaction(ev) {
     ev.preventDefault();
+    const addBtn = document.querySelector("#add-button");
+    addBtn.classList.add("disable");
     const form = document.querySelector("#transaction-form");
     form.classList.remove("disable");
+    const cancelBtn = document.querySelector("#cancel-button");
+    cancelBtn.classList.remove("disable");
     const saveBtn = document.querySelector("#save-btn");
     saveBtn.classList.add("disable");
+}
+
+function cancelTransaction() {
+    const cancelBtn = document.querySelector("#cancel-button");
+    cancelBtn.classList.add("disable");
+    const addBtn = document.querySelector("#add-button");
+    addBtn.classList.remove("disable");
+    const form = document.querySelector("#transaction-form");
+    form.classList.add("disable");
+    resetForm();
 }
 
 function loadCurrencyList(selector) {
@@ -213,7 +227,7 @@ function checkEnoughBalance() {
     checkEnoughBalanceRequest.onload = requestCoinAPITransaction;
 }
 
-function cleanForm() {
+function resetForm() {
     document.querySelector("#currency-from").value = "default";
     document.querySelector("#amount-from").value = "";
     document.querySelector("#currency-to").value = "default";
@@ -225,6 +239,10 @@ function cleanForm() {
     amount_from.removeAttribute("disabled");
     const currency_to = document.querySelector("#currency-to");
     currency_to.removeAttribute("disabled");
+    const cancelBtn = document.querySelector("#cancel-button");
+    cancelBtn.classList.add("disable");
+    const addBtn = document.querySelector("#add-button");
+    addBtn.classList.remove("disable");
 }
 
 function createTime(date) {
@@ -259,7 +277,7 @@ function addTransaction(ev) {
     addTransactionRequest.setRequestHeader("Content-Type", "application/json");
     addTransactionRequest.send(JSON.stringify(newTransaction));
     addTransactionRequest.onload = requestAddTransaction;
-    cleanForm();
+    resetForm();
 }
 
 window.onload = function () {
@@ -282,6 +300,9 @@ window.onload = function () {
 
     const convertBTN = document.getElementById("convert-button");
     convertBTN.addEventListener("click", validateInputsFromButtonConvert);
+
+    const cancelBTN = document.getElementById("cancel-button");
+    cancelBTN.addEventListener("click", cancelTransaction);
 
     const submitBTN = document.getElementById("save-btn");
     submitBTN.addEventListener("click", addTransaction);
