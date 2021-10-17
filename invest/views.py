@@ -97,8 +97,8 @@ def new_transaction():
             return jsonify(error), 400
 
 def check_balance_currency(coin):
-    check_balance_to = f"""SELECT SUM (amount_to) FROM investments WHERE currency_to = "{coin}";"""
-    check_balance_from = f"""SELECT SUM (amount_from) FROM investments WHERE currency_from = "{coin}";"""
+    check_balance_to = f"""SELECT IFNULL(SUM(amount_to), 0) FROM investments WHERE currency_to = "{coin}";"""
+    check_balance_from = f"""SELECT IFNULL(SUM(amount_from),0) FROM investments WHERE currency_from = "{coin}";"""
 
     total_to = dbManager.checkBalanceSQL(check_balance_to)
     total_from = dbManager.checkBalanceSQL(check_balance_from)

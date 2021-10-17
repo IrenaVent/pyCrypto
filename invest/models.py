@@ -62,9 +62,6 @@ class DBManager():
         cur.execute(consulta,params)
         total_sum = cur.fetchone()[0]
 
-        if total_sum == None:
-            total_sum = 0
-        
         conexion.close()
         return total_sum
 
