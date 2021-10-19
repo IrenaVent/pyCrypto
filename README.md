@@ -8,15 +8,21 @@
 
 ## Create the virtual environment
 
-`python -m venv 'name'`
+```
+python -m venv 'name'
+```
 
 ## Activate the virtual environment
 
-`. 'name'/bin/activate`
+```
+. 'name'/bin/
+```
 
 ## Install application's dependencies
 
-`pip install -r requirements.txt`
+```
+pip install -r requirements.txt
+```
 
 ## Create DB database
 
@@ -24,7 +30,9 @@ Inside to data folder create databse, which structure definition is on migration
 
 Type in your terminal:
 
-`sqlite investments.db`
+```
+sqlite investments.db
+```
 
 After that copy the code into migration folder and paste in your terminal
 
@@ -34,10 +42,14 @@ Rename .env_template to .env and select FLASK_ENV environment.
 
 Raneme config_template.py to config.py
 
+### config.py
+
 If you created the database in data folder for DATABASEPATH copypaste:
 
-`"data/investments.db"`
+```
+"data/investments.db"
+```
 
-Type your APIKEY from CoinAPI you have to get it on the next link:
+Type your APIKEY from CoinAPI, you can get it on the next link:
 
 [CoinAPI.io](https://www.coinapi.io/)
