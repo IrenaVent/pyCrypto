@@ -136,25 +136,32 @@ def investments_status():
 
         usd_values_currency = requestToCoinAPIStatus.requestCoinStatus(coins)
         
-        # total = balance € form coins
+        # invested_from € 
+        check_balance_from = """SELECT SUM (amount_from) FROM investments WHERE currency_from = "EUR";"""
+        invested_from = dbManager.checkBalanceSQL(check_balance_from)
+        print ("hola soy investid_from", invested_from)
+
+        check_balance_to = f"""SELECT IFNULL(SUM(amount_to), 0) FROM investments WHERE currency_to = "EUR";"""
+        invested_to = dbManager.checkBalanceSQL(check_balance_to)
+        print ("hola soy investid_to", invested_to)
+
+        # total = SUM From € + balance to/form € + total_balance coins (€)
         usd_total_coins = 0
         for coin in coins_currency:
             balance = check_balance_currency(coin)
             usd_total_coin = balance * usd_values_currency[f"{coin}"]
             usd_total_coins += usd_total_coin
 
-        total = usd_total_coins / usd_values_currency["EUR"]
+        total_coins = usd_total_coins / usd_values_currency["EUR"]
 
-        # invested € 
-        check_balance_from = """SELECT SUM (amount_from) FROM investments WHERE currency_from = "EUR";"""
-        invested = dbManager.checkBalanceSQL(check_balance_from)
-
+        total = invested_from + (invested_to - invested_from) + total_coins
+        
         # outcome € 
-        outcome = total - invested
+        outcome = total - invested_from
 
         respuesta = {
                 "status": "success",
-                "data": {"invested": invested, "total": total, "outcome": outcome,}
+                "data": {"invested": invested_from, "total": total, "outcome": outcome,}
             }
         return jsonify(respuesta), 200
 
