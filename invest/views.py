@@ -139,13 +139,11 @@ def investments_status():
         # invested_from € 
         check_balance_from = """SELECT SUM (amount_from) FROM investments WHERE currency_from = "EUR";"""
         invested_from = dbManager.checkBalanceSQL(check_balance_from)
-        print ("hola soy investid_from", invested_from)
 
         check_balance_to = f"""SELECT IFNULL(SUM(amount_to), 0) FROM investments WHERE currency_to = "EUR";"""
         invested_to = dbManager.checkBalanceSQL(check_balance_to)
-        print ("hola soy investid_to", invested_to)
 
-        # total = SUM From € + balance to/form € + total_balance coins (€)
+        # total = SUM From € + (balance to - form €) + total_coins (€)
         usd_total_coins = 0
         for coin in coins_currency:
             balance = check_balance_currency(coin)

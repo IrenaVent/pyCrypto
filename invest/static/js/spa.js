@@ -193,9 +193,9 @@ function validateInputsFromButtonConvert(ev) {
     const currency_to = document.querySelector("#currency-to");
 
     if (
-        currency_from.value == "" ||
+        currency_from.value == "default" ||
         amount_from.value == "" ||
-        currency_to.value == ""
+        currency_to.value == "default"
     ) {
         errorMessageForm("Please fill the form");
     } else if (currency_from.value == currency_to.value) {
