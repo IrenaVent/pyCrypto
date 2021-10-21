@@ -53,3 +53,11 @@ If you created the database in data folder for DATABASEPATH copypaste:
 Type your APIKEY from CoinAPI, you can get it on the next link:
 
 [CoinAPI.io](https://www.coinapi.io/)
+
+## Start
+
+To run, type on yout terminal
+
+```
+flask run
+```

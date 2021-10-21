@@ -64,7 +64,7 @@ function requestCoinAPITransaction() {
         const currency_to = document.querySelector("#currency-to");
         currency_to.setAttribute("disabled", true);
     } else {
-        errorMessage(response, "CoinApi request error");
+        errorMessage(response, "Request error");
     }
 }
 
@@ -243,6 +243,9 @@ function resetForm() {
     cancelBtn.classList.add("disable");
     const addBtn = document.querySelector("#add-button");
     addBtn.classList.remove("disable");
+    const errorMessageDiv = document.querySelector("#error-message");
+    const errorHTML = "";
+    errorMessageDiv.innerHTML = errorHTML;
 }
 
 function createTime(date) {

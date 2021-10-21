@@ -129,42 +129,43 @@ def request_coinAPI():
 def investments_status():
 
     try:
-        coins_currency = dbManager.getCoinCurrency("SELECT * FROM investments ORDER BY date;")
-        coins = "EUR,"
-        for coin in coins_currency:
-            coins += f"{coin},"
-
-        usd_values_currency = requestToCoinAPIStatus.requestCoinStatus(coins)
-        
-        # invested_from € 
+        # invested € 
         check_balance_from = """SELECT SUM (amount_from) FROM investments WHERE currency_from = "EUR";"""
         invested_from = dbManager.checkBalanceSQL(check_balance_from)
 
         check_balance_to = f"""SELECT IFNULL(SUM(amount_to), 0) FROM investments WHERE currency_to = "EUR";"""
         invested_to = dbManager.checkBalanceSQL(check_balance_to)
 
-        # total = SUM From € + (balance to - form €) + total_coins (€)
+        invested = invested_from - invested_to
+
+        # total € coins
+        coins_currency = dbManager.getCoinCurrency("SELECT * FROM investments ORDER BY date;")
+        
+        coins = "EUR,"
+        for coin in coins_currency: 
+            coins += f"{coin},"
+
+        usd_values_currency = requestToCoinAPIStatus.requestCoinStatus(coins)
+
         usd_total_coins = 0
         for coin in coins_currency:
             balance = check_balance_currency(coin)
             usd_total_coin = balance * usd_values_currency[f"{coin}"]
             usd_total_coins += usd_total_coin
+    
+        total = usd_total_coins / usd_values_currency["EUR"]
 
-        total_coins = usd_total_coins / usd_values_currency["EUR"]
-
-        total = invested_from + (invested_to - invested_from) + total_coins
-        
         # outcome € 
-        outcome = total - invested_from
+        outcome = total - invested
 
         respuesta = {
                 "status": "success",
-                "data": {"invested": invested_from, "total": total, "outcome": outcome,}
+                "data": {"invested": invested, "total": total, "outcome": outcome,}
             }
         return jsonify(respuesta), 200
 
     except Exception as error:
-        error = {
+        error = { 
             "status": "fail",
             "message": str(error)
             }
