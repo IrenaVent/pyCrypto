@@ -15,7 +15,7 @@ python -m venv 'name'
 ## Activate the virtual environment
 
 ```
-. 'name'/bin/
+. 'name'/bin/activate
 ```
 
 ## Install application's dependencies
@@ -35,10 +35,16 @@ cd data/
 ```
 
 ```
-sqlite investments.db
+sqlite3 investments.db
 ```
 
 After that copy the code into migration folder and paste in your terminal
+
+Close DB
+
+```
+.q
+```
 
 ## Rename
 

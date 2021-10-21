@@ -7,4 +7,4 @@ CREATE TABLE "investments" (
 	"currency_to"	TEXT NOT NULL,
 	"amount_to"	REAL NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT)
-)
+);
