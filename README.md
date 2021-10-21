@@ -26,9 +26,13 @@ pip install -r requirements.txt
 
 ## Create DB database
 
-Inside to data folder create databse, which structure definition is on migrations folder.
+Create data folder inside create databse, which structure definition is on migrations folder.
 
 Type in your terminal:
+
+```
+cd data/
+```
 
 ```
 sqlite investments.db
