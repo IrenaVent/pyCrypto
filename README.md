@@ -38,9 +38,9 @@ cd data/
 sqlite3 investments.db
 ```
 
-After that copy the code into migration folder and paste in your terminal
+After that copy the code into migration folder and paste in your terminal, press enter
 
-Close DB
+Close database
 
 ```
 .q
