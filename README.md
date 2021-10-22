@@ -46,6 +46,10 @@ Close DB
 .q
 ```
 
+```
+cd ..
+```
+
 ## Rename
 
 Rename .env_template to .env and select FLASK_ENV environment.
