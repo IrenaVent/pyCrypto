@@ -146,7 +146,7 @@ def investments_status():
             coins += f"{coin},"
 
         usd_values_currency = requestToCoinAPIStatus.requestCoinStatus(coins)
-
+        
         usd_total_coins = 0
         for coin in coins_currency:
             balance = check_balance_currency(coin)
@@ -170,18 +170,3 @@ def investments_status():
             "message": str(error)
             }
         return jsonify(error), 400
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

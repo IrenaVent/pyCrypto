@@ -200,6 +200,8 @@ function validateInputsFromButtonConvert(ev) {
         errorMessageForm("Please fill the form");
     } else if (currency_from.value == currency_to.value) {
         errorMessageForm("Currencies should be different");
+    } else if (amount_from.value < 0) {
+        errorMessageForm("Incorrect amount");
     } else {
         checkEnoughBalance();
     }

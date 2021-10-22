@@ -9,13 +9,13 @@
 ## Create the virtual environment
 
 ```
-python -m venv 'name'
+python -m venv venv
 ```
 
 ## Activate the virtual environment
 
 ```
-. 'name'/bin/activate
+. venv/bin/activate
 ```
 
 ## Install application's dependencies

@@ -86,7 +86,7 @@ class RQCoinAPI():
         dicValues = {}
         for dicCoin in dicUSDValues:
             dicValues.update({dicCoin['asset_id']:dicCoin['price_usd']})
-
+       
         return dicValues
 
 
