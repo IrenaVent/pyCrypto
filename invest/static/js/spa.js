@@ -49,7 +49,7 @@ function requestCoinAPITransaction() {
 
     if (this.readyState === 4 && this.status === 201) {
         const amountTo = document.querySelector("#amount-to");
-        amountTo.value = response["amount-to"].toFixed(2);
+        amountTo.value = response["amount-to"].toFixed(4);
 
         const unitePrice = document.querySelector("#unit-price");
         unitePrice.value = response["unit-price"].toFixed(4);
@@ -124,12 +124,12 @@ function loadStatus() {
         const valueStatus = response.data;
 
         const statusTable = document.querySelector("#status-table");
-        const investedHTML = `<td>${valueStatus["invested"].toFixed(2)}</td>`;
-        const totalHTML = `<td>${valueStatus["total"].toFixed(2)}</td>`;
-        const outcomeHTML = `<td>${valueStatus["outcome"].toFixed(2)}</td>`;
+        const investedHTML = `<td>${valueStatus["invested"].toFixed(4)}</td>`;
+        const totalHTML = `<td>${valueStatus["total"].toFixed(4)}</td>`;
+        const outcomeHTML = `<td>${valueStatus["outcome"].toFixed(4)}</td>`;
         statusTable.innerHTML = investedHTML + totalHTML + outcomeHTML;
 
-        if (valueStatus["outcome"].toFixed(2) <= 0) {
+        if (valueStatus["outcome"].toFixed(4) <= 0) {
             const statusTable = document
                 .querySelector("#status-table")
                 .getElementsByTagName("td");
