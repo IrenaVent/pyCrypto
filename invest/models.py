@@ -19,18 +19,17 @@ class DBManager():
         for item in cur.description:
             keys.append(item[0])        
 
-        # TODO change var's name
-        registros = []
-        for registro in cur.fetchall():
-            ix_clave = 0
+        registers = []
+        for register in cur.fetchall():
+            ix_key = 0
             d = {}
-            for columna in keys:
-                d[columna] = registro[ix_clave]
-                ix_clave += 1
-            registros.append(d)
+            for column in keys:
+                d[column] = register[ix_key]
+                ix_key += 1
+            registers.append(d)
  
         conexion.close()
-        return registros
+        return registers
 
     def getCoinCurrency(self, query, params = []):
 
