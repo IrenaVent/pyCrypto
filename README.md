@@ -70,7 +70,7 @@ Type your APIKEY from CoinAPI, you can get it on the next link:
 
 ## Start
 
-To run, type on yout terminal
+To run, make sure you have activated the virtual environment, type on your terminal:
 
 ```
 flask run
